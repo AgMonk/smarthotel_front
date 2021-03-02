@@ -7,7 +7,7 @@
             <user-manage/>
           </el-tab-pane>
           <el-tab-pane label="角色管理" name="角色管理">
-            角色管理
+            <role-manage/>
           </el-tab-pane>
           <el-tab-pane label="权限管理" name="权限管理">
             <permission-manage/>
@@ -22,12 +22,13 @@
 <script>
 import userManage from "./manage/userManage";
 import permissionManage from "./manage/permissionManage";
+import roleManage from "./manage/roleManage";
 
 export default {
   name: "authority",
   data() {
     return {
-      tabs: "权限管理",
+      tabs: "角色管理",
     }
   },
   methods: {
@@ -35,6 +36,7 @@ export default {
   components: {
     userManage,
     permissionManage,
+    roleManage,
   },
   mounted() {
     console.clear()

@@ -19,8 +19,7 @@
       <el-main>
         <el-table :data="data" >
           <el-table-column prop="id" label="ID" width="80px" />
-          <el-table-column prop="type" label="类型" width="80px" />
-          <el-table-column prop="permString" label="权限字符串"/>
+          <el-table-column prop="name" label="名称"/>
           <el-table-column prop="remark" label="备注"/>
           <el-table-column label="操作">
             <template slot-scope="scope">
@@ -42,13 +41,16 @@
       </el-footer>
     </el-container>
 
-    <el-dialog title="添加权限" :visible.sync="dialogFormVisible.create">
+    <el-dialog title="添加角色" :visible.sync="dialogFormVisible.create">
       <el-form ref="form" :model="param.create" label-width="120px">
-        <el-form-item label="权限字符串">
-          <el-input v-model="param.create.permString"/>
+        <el-form-item label="名称">
+          <el-input v-model="param.create.name"/>
         </el-form-item>
         <el-form-item label="备注">
           <el-input v-model="param.create.remark"/>
+        </el-form-item>
+        <el-form-item label="权限字符串">
+          <el-input v-model="param.create.permissionString"/>
         </el-form-item>
         <el-form-item>
           <el-button @click="param.create = {}" type="danger">重置</el-button>
@@ -57,11 +59,11 @@
       </el-form>
     </el-dialog>
 
-    <el-dialog title="修改权限" :visible.sync="dialogFormVisible.edit">
+    <el-dialog title="修改角色" :visible.sync="dialogFormVisible.edit">
       <el-form ref="form" :model="param.edit" label-width="120px">
         <el-form-item label="ID">{{param.edit.id}}</el-form-item>
-        <el-form-item label="权限字符串">
-          <el-input v-model="param.edit.permString"/>
+        <el-form-item label="名称">
+          <el-input v-model="param.edit.name"/>
         </el-form-item>
         <el-form-item label="备注">
           <el-input v-model="param.edit.remark"/>
@@ -82,7 +84,7 @@ import getData from "../../../assets/js/getData";
 import req from "../../../assets/js/req";
 
 export default {
-  name: "permissionManage",
+  name: "roleManage",
   data() {
     return {
       dialogFormVisible: {
@@ -99,9 +101,9 @@ export default {
           keyword: undefined,
         },
       },
-      data: [{id: 1, type: "2", permString: "permString", remark: "备注"}],
+      data: [{id: 1,  name: "name", remark: "备注"}],
       total:50,
-      keyPrefix: "permission",
+      keyPrefix: "role",
     }
   },
   methods: {
@@ -125,7 +127,6 @@ export default {
     },
     create({permString, remark}) {
       let arg = arguments[0];
-      let key = JSON.stringify(this.param.pageData);
       req({
         url: "/authority/{prefix}/create".format({prefix: this.keyPrefix}),
         data: arg,
