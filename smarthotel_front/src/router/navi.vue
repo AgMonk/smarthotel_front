@@ -43,6 +43,7 @@ export default {
       activeIndex: 0,
       navi: {
         '/home': '主页',
+        '/authority': '权限管理',
         '/me': '我的',
       },
       selected: '主页',

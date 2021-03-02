@@ -78,6 +78,11 @@
               <el-form-item label="用户名">
                 {{ userInfo.username }}
               </el-form-item>
+              <el-form-item label="昵称">
+                <el-col :span="18" :offset="3">
+                  <el-input v-model="userInfo.name" clearable/>
+                </el-col>
+              </el-form-item>
               <el-form-item label="注册时间">
                 {{ userInfo.createDatetime }}
               </el-form-item>
@@ -85,7 +90,7 @@
                 {{ userInfo.lastLoginDatetime }}
               </el-form-item>
               <el-form-item label="角色">
-                {{ userInfo.roles.join(", ") }}
+                {{ userInfo.roles!==undefined?userInfo.roles.join(", "):undefined}}
               </el-form-item>
               <el-form-item label="电话">
                 <el-col :span="18" :offset="3">
@@ -143,9 +148,9 @@
 </template>
 
 <script>
-import req from "../assets/js/req";
-import {exists} from "../assets/js/utils";
-import getData from "../assets/js/getData";
+import req from "../../assets/js/req";
+import {exists} from "../../assets/js/utils";
+import getData from "../../assets/js/getData";
 
 let emptyLoginParam = {username: undefined, password: undefined,}
 let emptyRegParam = {username: undefined, password: undefined}
@@ -167,7 +172,7 @@ export default {
       //登陆状态
       authenticated: false,
       backgroundImg: {
-        backgroundImage: "url(" + require("../assets/img/bg.jpg") + ")",
+        backgroundImage: "url(" + require("../../assets/img/bg.jpg") + ")",
       },
       userInfo: {},
     }
@@ -193,13 +198,14 @@ export default {
       let data = {};
       data.tel = this.userInfo.tel;
       data.email = this.userInfo.email;
+      data.name = this.userInfo.name;
       req({url: "/user/edit", data: data, success: this.success}).then(res => {
         console.log(res)
         sessionStorage.removeItem("userInfo")
       })
     },
     info() {
-      getData(false, "userInfo", 30, req, {url: "/user/info", success: this.success})
+      getData(false, "userInfo", 10, req, {url: "/user/info", success: this.success})
         .then(res => {
           if (res.code === 2000) {
             this.userInfo = res.data;
@@ -211,7 +217,6 @@ export default {
         url: "/user/reg", data: this.param.reg, success: this.success
       }).then(res => {
         if (res.code === 2000) {
-          this.authenticated = true;
         } else if (exists(res.data)) {
           this.$message(res.data.join(" & "))
         }
@@ -234,8 +239,6 @@ export default {
         if (res.code === 2000) {
           this.info();
           this.authenticated = true;
-        } else if (exists(res.data)) {
-          this.$message(res.data.join(" & "))
         }
       })
     },
@@ -250,6 +253,7 @@ export default {
         url: "/user/status",
         success: res => {
           this.$message(res.message)
+
         }
       }).then(res => {
         if (res.code === 2000) {
@@ -257,6 +261,8 @@ export default {
           this.authenticated = true;
         }else{
           this.authenticated = false;
+          sessionStorage.clear();
+          localStorage.clear();
         }
       })
     }
