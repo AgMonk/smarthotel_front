@@ -22,6 +22,8 @@
 
 <script>
 
+import axios from "axios";
+
 export default {
   name: "navi",
   methods: {
@@ -50,6 +52,18 @@ export default {
     }
   },
   mounted() {
+  },
+  watch:{
+    "$route":{
+      handler(route){
+        console.clear();
+        axios.post("/api/user/status").then(res => {
+          if (res.data.code !== 2000) {
+            window.location.href = "#/me";
+          }
+        })
+      }
+    }
   }
 }
 </script>

@@ -25,7 +25,8 @@
           <el-table-column label="操作">
             <template slot-scope="scope">
               <el-button type="primary" @click="dialogFormVisible.edit=true;param.edit = scope.row;">修改</el-button>
-<!--              <el-button type="danger">删除</el-button>-->
+              <el-button type="danger" @click="del(scope.row.id);">删除</el-button>
+              <!--              <el-button type="danger">删除</el-button>-->
             </template>
           </el-table-column>
         </el-table>
@@ -110,6 +111,19 @@ export default {
       if (res.code !== 2000 && exists(res.data)) {
         this.$message(res.data.join(" & "))
       }
+    },
+    del(id){
+      if (!confirm("确认删除权限？")) {
+        return ;
+      }
+      let key = JSON.stringify(this.param.pageData);
+      req({url: "/authority/{prefix}/del".format({prefix: this.keyPrefix}), data: {id:id}, success: this.success}).then(res =>{
+        if (res.code === 2000) {
+          sessionStorage.removeItem(this.keyPrefix + " " + key);
+          this.dialogFormVisible.edit = false;
+          this.findPage(this.param.pageData);
+        }
+      })
     },
     findPage({page, pageSize, type, keyword}) {
       let arg = arguments[0];

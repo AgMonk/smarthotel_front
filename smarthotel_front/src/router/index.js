@@ -12,6 +12,5 @@ export default new Router({
     {path: '/me', component: me},
     {path: '/home', component: home},
     {path: '/authority', component: authority},
-
   ]
 })

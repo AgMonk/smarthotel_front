@@ -19,7 +19,9 @@ let req = function ({url, data, params,success,method})  {
         console.log(res);
       }
     })
+  }).catch(reason => {
+    console.log(reason)
   })
 }
 
-export default req;
+export default req
