@@ -90,7 +90,7 @@
                 {{ userInfo.lastLoginDatetime }}
               </el-form-item>
               <el-form-item label="角色">
-                {{ userInfo.roles!==undefined?userInfo.roles.join(", "):undefined}}
+               <el-tag v-for="(item,i) in userInfo.roles" :key="i">{{item.remark}}</el-tag>
               </el-form-item>
               <el-form-item label="电话">
                 <el-col :span="18" :offset="3">
