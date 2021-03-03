@@ -16,7 +16,9 @@ let format = function (template, ...data) {
   if (data.length === 1 && getTypeOf(d) === 'Object') {
     for (let key in d) {
       if (d.hasOwnProperty(key)) {
-        s = s.replaceAll("{" + key + "}", d[key]);
+        let keyword = "{" + key + "}";
+        while (s.includes(keyword))
+        s = s.replace(keyword, d[key]);
       }
     }
     return s;
