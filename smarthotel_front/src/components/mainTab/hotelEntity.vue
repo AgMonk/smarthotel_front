@@ -34,7 +34,6 @@ export default {
     change(e){
       this[e.entity+"Id"] = e.id;
       console.log(e.entity+"Id")
-      console.log(e.id)
       if (e.entity === 'building') {
         this.tabs = "楼层管理"
       }

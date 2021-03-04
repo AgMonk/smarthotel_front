@@ -155,7 +155,8 @@ export default {
   watch :{
     parentId: {
       handler(e) {
-        console.log(e)
+        this.param.pageData.parentId = e;
+        this.findPageData();
       }
     }
   },
