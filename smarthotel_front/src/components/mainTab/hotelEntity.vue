@@ -4,13 +4,13 @@
     <el-main>
       <el-tabs v-model="tabs" >
         <el-tab-pane label="楼栋管理" name="楼栋管理">
-          <hotel-entity-manage prefix="building"  />
+          <hotel-entity-manage prefix="building" @change-id="change" />
         </el-tab-pane>
         <el-tab-pane label="楼层管理" name="楼层管理">
-          <hotel-entity-manage prefix="floor" parent-prefix="building" />
+          <hotel-entity-manage prefix="floor" @change-id="change" parent-prefix="building" :parent-id="buildingId" />
         </el-tab-pane>
         <el-tab-pane label="房间管理" name="房间管理">
-          <hotel-entity-manage prefix="room" parent-prefix="floor" />
+          <hotel-entity-manage prefix="room" parent-prefix="floor" :parent-id="floorId" />
         </el-tab-pane>
       </el-tabs>
     </el-main>
@@ -26,6 +26,22 @@ export default {
   data() {
     return {
       tabs: "楼栋管理",
+      buildingId:undefined,
+      floorId:undefined,
+    }
+  },
+  methods:{
+    change(e){
+      this[e.entity+"Id"] = e.id;
+      console.log(e.entity+"Id")
+      console.log(e.id)
+      if (e.entity === 'building') {
+        this.tabs = "楼层管理"
+      }
+      if (e.entity === 'floor') {
+        this.tabs = "房间管理"
+      }
+
     }
   },
   components:{

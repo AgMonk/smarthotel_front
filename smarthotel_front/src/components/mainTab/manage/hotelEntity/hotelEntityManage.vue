@@ -25,7 +25,11 @@
         <el-table :data="data">
           <el-table-column prop="id" label="id"/>
           <el-table-column prop="number" label="编号"/>
-          <el-table-column prop="name" label="名称"/>
+          <el-table-column label="名称">
+            <template slot-scope="scope">
+              <el-button type="primary" @click="$emit('change-id',{entity:prefix,id:scope.row.id})">{{scope.row.name}}</el-button>
+            </template>
+          </el-table-column>
           <el-table-column v-if="parentPrefix!==undefined" prop="parent.name" label="上级ID"/>
         </el-table>
       </el-main>
@@ -38,6 +42,7 @@
 import req from "../../../../assets/js/req";
 import {copyObj, exists} from "../../../../assets/js/utils";
 import getData from "../../../../assets/js/getData";
+import axios from "axios";
 
 let entityTemplate = {
   id: 0,
@@ -60,6 +65,7 @@ export default {
           pageSize: 10,
           type: undefined,
           keyword: undefined,
+          parentId: 1,
         }
       },
       data: [],
@@ -146,7 +152,14 @@ export default {
     this.findPageData()
     this.findParentAll()
   },
-  props: ["prefix", "parentPrefix"]
+  watch :{
+    parentId: {
+      handler(e) {
+        console.log(e)
+      }
+    }
+  },
+  props: ["prefix", "parentPrefix","parentId"]
 }
 </script>
 
