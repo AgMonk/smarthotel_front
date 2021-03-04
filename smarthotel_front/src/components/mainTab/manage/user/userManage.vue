@@ -89,9 +89,9 @@
 </template>
 
 <script>
-import {exists} from "../../../assets/js/utils";
-import getData from "../../../assets/js/getData";
-import req from "../../../assets/js/req";
+import {exists} from "../../../../assets/js/utils";
+import getData from "../../../../assets/js/getData";
+import req from "../../../../assets/js/req";
 
 export default {
   name: "userManage",

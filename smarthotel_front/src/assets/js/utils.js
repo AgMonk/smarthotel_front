@@ -100,6 +100,14 @@ let loginVerification = (that,success,...args)=>{
     }
   })
 }
+/**
+ * 复制对象
+ * @param obj 对象
+ * @returns {any}
+ */
+let copyObj = (obj)=>{
+  return JSON.parse(JSON.stringify(obj));
+}
 
 let exists = (obj)=>obj!==undefined&&obj!==null;
 
@@ -109,4 +117,5 @@ export {
   format,
   getParam,
   loginVerification,
+  copyObj,
 }

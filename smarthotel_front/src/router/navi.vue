@@ -45,6 +45,7 @@ export default {
       activeIndex: 0,
       navi: {
         '/home': '主页',
+        '/hotelEntity': '楼层管理',
         '/authority': '权限管理',
         '/me': '我的',
       },

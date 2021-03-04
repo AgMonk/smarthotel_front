@@ -20,9 +20,9 @@
 </template>
 
 <script>
-import userManage from "./manage/userManage";
-import permissionManage from "./manage/permissionManage";
-import roleManage from "./manage/roleManage";
+import userManage from "./manage/user/userManage";
+import permissionManage from "./manage/user/permissionManage";
+import roleManage from "./manage/user/roleManage";
 
 export default {
   name: "authority",
