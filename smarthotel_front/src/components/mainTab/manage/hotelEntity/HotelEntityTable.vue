@@ -19,7 +19,7 @@
       <el-main>
         <el-table :data="dataShow">
           <el-table-column prop="id" label="ID"/>
-          <el-table-column prop="number" label="编号"/>
+          <el-table-column sortable prop="number" label="编号"/>
           <el-table-column prop="name" label="名称"/>
           <el-table-column label="操作">
             <template slot-scope="scope">
