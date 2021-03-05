@@ -49,15 +49,15 @@
         <el-form-item label="名称">
           <el-input v-model="param.edit.name"/>
         </el-form-item>
-        <el-form-item label="上级" v-if="param.edit.parentId!==undefined">
-          <el-select v-model="param.edit.parentId" style="width:100%">
-            <el-option v-for="(item,i) in parentData"
-                       :key="i"
-                       :value="item.id"
-                       :label="item.name"
-            />
-          </el-select>
-        </el-form-item>
+<!--        <el-form-item label="上级" v-if="param.edit.parentId!==undefined">-->
+<!--          <el-select v-model="param.edit.parentId" style="width:100%">-->
+<!--            <el-option v-for="(item,i) in parentData"-->
+<!--                       :key="i"-->
+<!--                       :value="item.id"-->
+<!--                       :label="item.name"-->
+<!--            />-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
         <el-form-item>
           <el-button type="success" @click="edit">确认</el-button>
         </el-form-item>
@@ -124,20 +124,20 @@ export default {
       this.child.prefix = this.prefix==="building"?"floor":"room";
       this.child.parentId = id;
       this.visible.child=true;
-      req({
-        url: "/hotelEntity/{prefix}/findPageData".format({prefix: this.prefix}),
-        data: {
-          page: 1,
-          pageSize: 99999,
-          parentId: this.parentId,
-        },
-        success: this.success
-      }).then(res => {
-        if (res.code === 2000) {
-          let data = res.data;
-          this.child.parentData = data.data;
-        }
-      })
+      // req({
+      //   url: "/hotelEntity/{prefix}/findPageData".format({prefix: this.prefix}),
+      //   data: {
+      //     page: 1,
+      //     pageSize: 99999,
+      //     parentId: this.parentId,
+      //   },
+      //   success: this.success
+      // }).then(res => {
+      //   if (res.code === 2000) {
+      //     let data = res.data;
+      //     this.child.parentData = data.data;
+      //   }
+      // })
     },
     create(){
       this.cudRequest('create',Object.assign({parentId:this.parentId},this.param.create));
