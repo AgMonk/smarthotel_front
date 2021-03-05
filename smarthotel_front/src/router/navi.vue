@@ -46,6 +46,7 @@ export default {
       navi: {
         '/home': '主页',
         '/hotelEntity': '楼层管理',
+        '/hotelEntity2': '楼层管理2',
         '/authority': '权限管理',
         '/me': '我的',
       },

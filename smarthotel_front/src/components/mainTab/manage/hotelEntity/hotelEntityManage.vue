@@ -12,10 +12,24 @@
                 <el-input v-model="param.pageData.keyword"/>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" @close="findPageData">查询</el-button>
+                <el-select v-model="param.pageData.parentId" v-if="parentPrefix!==undefined">
+                  <el-option
+                    v-for="(item,i) in parentData"
+                    :key="i"
+                    :label="item.name"
+                    :value="item.id"
+                  />
+                </el-select>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary">添加</el-button>
+                <el-button type="primary"
+                           @click="parentPrefix===undefined?findPageData($event)
+                           :$emit('change-id',Object.assign({entity:parentPrefix},parentData.filter(item=>item.id===param.pageData.parentId)[0]))">
+                  查询
+                </el-button>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="dialogFormVisible.create=true">添加</el-button>
               </el-form-item>
             </el-form>
           </el-col>
@@ -27,14 +41,71 @@
           <el-table-column prop="number" label="编号"/>
           <el-table-column label="名称">
             <template slot-scope="scope">
-              <el-button type="primary" @click="$emit('change-id',{entity:prefix,id:scope.row.id})">{{scope.row.name}}</el-button>
+              <el-button type="primary" @click="$emit('change-id',Object.assign({entity:prefix},scope.row))">
+                {{ scope.row.parent ? scope.row.parent.name + "_" : "" }}{{ scope.row.name }}
+              </el-button>
             </template>
           </el-table-column>
-          <el-table-column v-if="parentPrefix!==undefined" prop="parent.name" label="上级ID"/>
+          <el-table-column v-if="parentPrefix!==undefined" prop="parent.name" label="所属"/>
+          <el-table-column>
+            <template slot-scope="scope">
+              <el-button type="primary" @click="param.edit = scope.row;dialogFormVisible.edit=true">修改</el-button>
+              <el-button type="danger" @click="param.del = scope.row;del()">删除</el-button>
+            </template>
+          </el-table-column>
         </el-table>
       </el-main>
       <el-footer>foot</el-footer>
     </el-container>
+
+    <el-dialog title="添加" :visible.sync="dialogFormVisible.create">
+      <el-form :model="param.create" label-width="120px">
+        <el-form-item label="编号">
+          <el-input v-model="param.create.number"/>
+        </el-form-item>
+        <el-form-item label="名称">
+          <el-input v-model="param.create.name"/>
+        </el-form-item>
+        <el-form-item label="上级" v-if="parentPrefix!==undefined">
+          <el-select v-model="param.create.parentId">
+            <el-option
+              v-for="(item,i) in parentData"
+              :key="i"
+              :label="item.name"
+              :value="item.id"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="create">确认</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+    <el-dialog title="修改" :visible.sync="dialogFormVisible.edit">
+      <el-form :model="param.edit" label-width="120px">
+        <el-form-item label="id">{{ param.edit.id }}</el-form-item>
+        <el-form-item label="编号">
+          <el-input v-model="param.edit.number"/>
+        </el-form-item>
+        <el-form-item label="名称">
+          <el-input v-model="param.edit.name"/>
+        </el-form-item>
+        <el-form-item label="上级" v-if="parentPrefix!==undefined">
+          <el-select v-model="param.edit.parentId">
+            <el-option
+              v-for="(item,i) in parentData"
+              :key="i"
+              :label="item.name"
+              :value="item.id"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="edit">确认</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -48,7 +119,7 @@ let entityTemplate = {
   id: 0,
   number: 0,
   name: "",
-  parentId: 0,
+  parentId: 1,
   parent: undefined,
 }
 
@@ -56,6 +127,10 @@ export default {
   name: "hotelEntityManage",
   data() {
     return {
+      dialogFormVisible: {
+        create: false,
+        edit: false,
+      },
       param: {
         create: copyObj(entityTemplate),
         del: copyObj(entityTemplate),
@@ -70,6 +145,7 @@ export default {
       },
       data: [],
       parentData: undefined,
+      parent: {},
     }
   },
   methods: {
@@ -80,7 +156,9 @@ export default {
       this.cudRequest("edit")
     },
     del() {
-      this.cudRequest("del")
+      if (confirm("确认删除？")) {
+        this.cudRequest("del")
+      }
     },
     getParent() {
       if (this.parentPrefix === undefined || this.parentData === undefined || this.data === undefined) {
@@ -88,12 +166,10 @@ export default {
       }
       let t = this.data;
       t.forEach(item => {
-        console.log(item)
-        item.parent = this.parentData.filter(i => i.id === item.id)[0];
-        console.log(item)
+        item.parent = this.parentData.filter(i => i.id === item.parentId)[0];
       })
       this.data = t;
-      console.log(this.data)
+      console.log(t)
     },
     findParentAll() {
       if (this.parentPrefix === undefined) {
@@ -123,16 +199,19 @@ export default {
     //写操作请求
     cudRequest(key) {
       req({url: this.getUrl(key), data: this.param[key], success: this.success}).then(res => {
-        this.param[key] = copyObj(entityTemplate)
-        //清理缓存内的分页数据
-        let sessionKeys = Object.keys(sessionStorage);
-        sessionKeys.forEach((key) => {
-          if (key.startsWith(this.prefix + "->")) {
-            sessionStorage.removeItem(key);
-          }
-        })
-        //查询分页数据
-        this.findPageData();
+        if (res.code === 2000) {
+          this.param[key] = copyObj(entityTemplate)
+          //清理缓存内的分页数据
+          let sessionKeys = Object.keys(sessionStorage);
+          sessionKeys.forEach((key) => {
+            if (key.startsWith(this.prefix + "->")) {
+              sessionStorage.removeItem(key);
+            }
+          })
+          this.dialogFormVisible[key] = false
+          //查询分页数据
+          this.findPageData();
+        }
       })
     },
     getPageKey() {
@@ -152,15 +231,16 @@ export default {
     this.findPageData()
     this.findParentAll()
   },
-  watch :{
+  watch: {
     parentId: {
       handler(e) {
+        this.parent = this.parentData.filter(item => item.id === e)[0];
         this.param.pageData.parentId = e;
         this.findPageData();
       }
     }
   },
-  props: ["prefix", "parentPrefix","parentId"]
+  props: ["prefix", "parentPrefix", "parentId"]
 }
 </script>
 
