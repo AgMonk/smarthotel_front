@@ -178,7 +178,7 @@ export default {
       }
       let arg = {};
       arg.id = id;
-      arg.hasRoles = roles.map(item => item.id).join(",");
+      arg.hasRoles = roles.map(item => item.id);
       delete arg.permissions;
       let key = JSON.stringify(this.param.pageData);
       req({

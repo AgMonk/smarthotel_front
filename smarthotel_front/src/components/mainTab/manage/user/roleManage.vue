@@ -198,7 +198,7 @@ export default {
     },
     create({permissions}) {
       let arg = JSON.parse(JSON.stringify(arguments[0]));
-      arg.hasPerm = permissions.map(item=>item.id).join(",");
+      arg.hasPerm = permissions.map(item=>item.id);
       delete arg.permissions;
       req({
         url: "/authority/{prefix}/create".format({prefix: this.keyPrefix}),
@@ -218,7 +218,7 @@ export default {
         return ;
       }
       let arg = JSON.parse(JSON.stringify(arguments[0]));
-      arg.hasPerm = permissions.map(item=>item.id).join(",");
+      arg.hasPerm = permissions.map(item=>item.id);
       delete arg.permissions;
       let key = JSON.stringify(this.param.pageData);
       req({

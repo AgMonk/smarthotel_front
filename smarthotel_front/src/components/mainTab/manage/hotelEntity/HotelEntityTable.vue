@@ -189,6 +189,9 @@ export default {
           if (res.code === 2000) {
             let data = res.data;
             this.pagination.total = data.totalCount;
+            data.data.sort((o1,o2)=>{
+              return o1.number - o2.number
+            })
             this.data[page] = data.data;
             this.dataShow = data.data;
           }
