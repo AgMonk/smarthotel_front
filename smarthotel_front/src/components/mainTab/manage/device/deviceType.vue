@@ -2,17 +2,18 @@
   <div>
     <el-button type="success" @click="visible.create=true">添加</el-button>
     <el-table :data="data">
+      <el-table-column prop="id" label="ID"/>
       <el-table-column prop="type" label="类型"/>
       <el-table-column label="包含设备ID">
         <template slot-scope="scope">
-          {{scope.row.id.join(",")}}
+          {{scope.row.deviceIds.join(",")}}
         </template>
       </el-table-column>
       <el-table-column prop="name" label="名称"/>
       <el-table-column label="包含指令">
         <template slot-scope="scope">
 <!--          {{scope.row.hasOrders}}-->
-          <el-tag v-for="(item,i) in orders.filter(o=>scope.row.hasOrders.includes(o.id))" :key="i"  >{{item.remark}}</el-tag>
+          <el-tag v-for="(item,i) in orders.filter(o=>scope.row.hasOrders.includes(o.deviceIds))" :key="i"  >{{item.remark}}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作">
@@ -54,13 +55,13 @@
     <el-dialog title="修改" :visible.sync="visible.edit">
         <el-form :model="param.edit" label-width="120px">
           <el-form-item label="ID">
-           {{param.edit.io}}
+           {{param.edit.id}}
           </el-form-item>
            <el-form-item label="设备类型">
             <el-input v-model="param.edit.type"/>
           </el-form-item>
           <el-form-item label="包含设备ID">
-            <el-input v-model="param.edit.id"/>
+            <el-input v-model="param.edit.deviceId"/>
           </el-form-item>
           <el-form-item label="中文名">
             <el-input v-model="param.edit.name"/>
