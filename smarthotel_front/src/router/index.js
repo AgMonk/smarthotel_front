@@ -5,6 +5,7 @@ import home from "../components/mainTab/home";
 import authority from "../components/mainTab/authority";
 import hotelEntity from "../components/mainTab/hotelEntity";
 import hotelEntity2 from "../components/mainTab/hotelEntity2";
+import device from "../components/device";
 
 Vue.use(Router)
 
@@ -16,5 +17,6 @@ export default new Router({
     {path: '/authority', component: authority},
     {path: '/hotelEntity', component: hotelEntity},
     {path: '/hotelEntity2', component: hotelEntity2},
+    {path: '/device', component: device},
   ]
 })

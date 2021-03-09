@@ -178,7 +178,7 @@ export default {
         this.dataShow = this.data[page];
       } else {
         req({
-          url: "/hotelEntity/{prefix}/findPageData".format({prefix: this.prefix}),
+          url: "/hotelEntity/{prefix}/findPage".format({prefix: this.prefix}),
           data: {
             page: page,
             pageSize: this.pagination.pageSize,

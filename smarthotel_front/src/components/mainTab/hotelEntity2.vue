@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import HotelEntityTable from "./manage/hotelEntity/HotelEntityTable";
+import HotelEntityTable from "./manage/hotelEntity/hotelEntityTable";
 export default {
   name: "hotelEntity",
   components: {HotelEntityTable},
