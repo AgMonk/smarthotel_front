@@ -2,7 +2,7 @@
   <div>
     <el-button type="success" @click="visible.create=true">添加</el-button>
     <el-table :data="data">
-      <el-table-column prop="id" label="ID"/>
+      <el-table-column prop="id" label="ID" width="60px" />
       <el-table-column prop="type" label="类型"/>
       <el-table-column label="包含设备ID">
         <template slot-scope="scope">
@@ -13,7 +13,8 @@
       <el-table-column label="包含指令">
         <template slot-scope="scope">
 <!--          {{scope.row.hasOrders}}-->
-          <el-tag v-for="(item,i) in orders.filter(o=>scope.row.hasOrders.includes(o.deviceIds))" :key="i"  >{{item.remark}}</el-tag>
+<!--          <el-button size="mini" type="warning" v-for="(item,i) in orders.filter(o=>scope.row.hasOrders.includes(o.id))" :key="i"  @click="sendOrder(item)" >{{item.remark}}</el-button>-->
+          <el-tag v-for="(item,i) in orders.filter(o=>scope.row.hasOrders.includes(o.id))" :key="i"  >{{item.remark}}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="操作">
@@ -31,7 +32,7 @@
           <el-input v-model="param.create.type"/>
         </el-form-item>
         <el-form-item label="包含设备ID">
-          <el-input v-model="param.create.id"/>
+          <el-input v-model="param.create.deviceIds"/>
         </el-form-item>
         <el-form-item label="中文名">
           <el-input v-model="param.create.name"/>
@@ -61,7 +62,7 @@
             <el-input v-model="param.edit.type"/>
           </el-form-item>
           <el-form-item label="包含设备ID">
-            <el-input v-model="param.edit.deviceId"/>
+            <el-input v-model="param.edit.deviceIds"/>
           </el-form-item>
           <el-form-item label="中文名">
             <el-input v-model="param.edit.name"/>
@@ -112,13 +113,16 @@ export default {
       this.$message(res.message)
 
     },
+    sendOrder(order){
+      console.log(order)
+    },
     parseId(param){
       let a = [];
       console.log(param)
-      if (getTypeOf(param.id) === "Array") {
+      if (getTypeOf(param.deviceIds) === "Array") {
         return;
       }
-      let id = param.id.split(" ");
+      let id = param.deviceIds.split(" ");
       for (let i = 0; i < id.length; i++) {
         let item = id[i];
         if (item.includes("-")) {
@@ -134,7 +138,7 @@ export default {
           a.push(parseInt(item))
         }
       }
-      param.id = a;
+      param.deviceIds = a;
     },
     edit() {
       this.parseId(this.param.edit);
