@@ -182,7 +182,7 @@ export default {
       delete arg.permissions;
       let key = JSON.stringify(this.param.pageData);
       req({
-        url: "/authority/{prefix}/edit".format({prefix: this.keyPrefix}),
+        url: "/authority/{prefix}/editRoles".format({prefix: this.keyPrefix}),
         data: arg,
         success: this.success
       }).then(res => {

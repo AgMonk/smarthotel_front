@@ -46,6 +46,15 @@
                 </el-row>
                 <el-row>
                   <el-col :span="6" :offset="3">
+                    <el-button plain style="width: 100%">上级Id</el-button>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-input v-model="param.reg.parentId" tabindex="11" clearable/>
+                  </el-col>
+                </el-row>
+
+                <el-row>
+                  <el-col :span="6" :offset="3">
                     <el-button plain style="width: 100%">密码</el-button>
                   </el-col>
                   <el-col :span="12">
@@ -153,7 +162,7 @@ import {exists} from "../../assets/js/utils";
 import getData from "../../assets/js/getData";
 
 let emptyLoginParam = {username: undefined, password: undefined,}
-let emptyRegParam = {username: undefined, password: undefined}
+let emptyRegParam = {username: undefined, password: undefined,parentId:undefined}
 let emptyPass = {oldPwd: undefined, newPwd: undefined}
 
 export default {
