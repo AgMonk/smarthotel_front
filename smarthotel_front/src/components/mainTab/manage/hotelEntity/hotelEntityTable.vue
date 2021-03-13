@@ -49,15 +49,10 @@
         <el-form-item label="名称">
           <el-input v-model="param.edit.name"/>
         </el-form-item>
-<!--        <el-form-item label="上级" v-if="param.edit.parentId!==undefined">-->
-<!--          <el-select v-model="param.edit.parentId" style="width:100%">-->
-<!--            <el-option v-for="(item,i) in parentData"-->
-<!--                       :key="i"-->
-<!--                       :value="item.id"-->
-<!--                       :label="item.name"-->
-<!--            />-->
-<!--          </el-select>-->
-<!--        </el-form-item>-->
+        <el-form-item label="mac" v-if="prefix==='room'">
+          <el-input v-model="param.edit.mac"/>
+        </el-form-item>
+
         <el-form-item>
           <el-button type="success" @click="edit">确认</el-button>
         </el-form-item>
@@ -70,6 +65,9 @@
         </el-form-item>
         <el-form-item label="名称">
           <el-input v-model="param.create.name"/>
+        </el-form-item>
+        <el-form-item label="mac" v-if="prefix==='room'">
+          <el-input v-model="param.create.mac"/>
         </el-form-item>
         <el-form-item>
           <el-button type="success" @click="create">确认</el-button>
