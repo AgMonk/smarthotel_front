@@ -37,8 +37,8 @@
         </el-form-item>
         <el-form-item label="参数是否必须">
           <el-select v-model="param.create.requireParam">
-            <el-option value="1" label="必须" />
-            <el-option :value="undefined" label="非必须"/>
+            <el-option :value="true" label="必须" />
+            <el-option :value="false" label="非必须"/>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -67,8 +67,8 @@
         </el-form-item>
         <el-form-item label="参数是否必须">
           <el-select v-model="param.edit.requireParam">
-            <el-option value="1" label="必须" />
-            <el-option :value="undefined" label="非必须"/>
+            <el-option :value="true" label="必须" />
+            <el-option :value="false" label="非必须"/>
           </el-select>
         </el-form-item>
         <el-form-item>
